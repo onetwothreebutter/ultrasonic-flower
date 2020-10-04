@@ -1,0 +1,16 @@
+<html>
+<body>
+<h1>Socket Test</h1>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.dev.js"></script>
+<script>
+    var socket = io();
+    socket.on('ultrasound-distance', function(msg){
+        console.log(msg);
+        const newEl = document.createElement('div');
+        const newText = document.createTextNode(msg);
+        newEl.appendChild(newText);
+        document.body.appendChild(newEl);
+    });
+</script>
+</body>
+</html>
