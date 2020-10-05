@@ -24,7 +24,8 @@ io.on('connection', (socket) => {
         console.log('dataToSend', dataToSend);
         const distanceInCm = dataToSend
             .replace('Measured Distance = ', '')
-            .replace(' cm', '');
+            .replace(' cm', '')
+            .trim();
         io.emit('ultrasound-distance', { distance: distanceInCm});
 
     });
