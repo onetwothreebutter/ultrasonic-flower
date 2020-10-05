@@ -1,6 +1,28 @@
 <html>
+<head>
+    <style>
+        html {
+            height: 100vh;
+        }
+
+        body {
+            background: #000;
+            height: 500vh;
+        }
+
+        canvas {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 100vh;
+            max-width: 100vw;
+        }
+    </style>
+</head>
 <body>
 <h1>Socket Test</h1>
+<canvas id="hero-lightpass" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.dev.js"></script>
 <script>
     var socket = io();
@@ -11,6 +33,76 @@
         newEl.appendChild(newText);
         document.body.appendChild(newEl);
     });
+</script>
+<script>
+    const html = document.documentElement;
+    const body = document.querySelector('body');
+    const canvas = document.getElementById("hero-lightpass");
+    const context = canvas.getContext("2d");
+
+    const currentFrame = index => {
+        const value = `./flower-images/Daffodil-34826${index.toString().padStart(4, '0')}.jpg`;
+        console.log('currentFrame',value);
+        return value;
+        //https://assets.codepen.io/502545/Daffodil+-+348260450.jpg
+    };
+
+    // Create image to put in the canvas
+    const img = new Image();
+    img.src = currentFrame(0);
+
+    // Set canvas dimensions
+    //canvas.width = window.innerWidth;
+    //canvas.height = window.innerWidth / 1.7777;
+    canvas.width = 2560;
+    canvas.height = 1440;
+
+
+    //2560 × 1440
+    //2560 / 1440 = 1.777
+
+    // Create, load and draw the image
+    // step, for now we'll just load image 0 of our sequence
+    img.onload=function(){
+        context.drawImage(img, 0, 0);
+        console.log(img);
+    }
+
+    window.addEventListener('resize', () => {
+        context.drawImage(img, 0, 0);
+    });
+
+    const updateImage = index => {
+        img.src = currentFrame(index);
+        context.drawImage(img, 0, 0);
+    }
+
+    //index is from 0 to 1400, skipping every 50
+    const frameCount = 1400;
+    window.addEventListener('scroll', () => {
+
+        const scrollTop = body.scrollTop;
+        const maxScrollTop = html.scrollHeight - window.innerHeight;
+        const scrollFraction = scrollTop / maxScrollTop;
+        console.log('scrollTop',scrollTop);
+        const frameIndex = Math.min(
+            frameCount - 1,
+            Math.ceil(scrollFraction * frameCount)
+        );
+        console.log( 'frameIndex', frameIndex);
+
+        requestAnimationFrame(() => updateImage(frameIndex));
+    });
+
+
+    const preloadImages = () => {
+        for (let i = 1; i < frameCount; i++) {
+            const img = new Image();
+            img.src = currentFrame(i);
+        }
+    };
+
+    preloadImages();
 </script>
 </body>
 </html>
