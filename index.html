@@ -27,6 +27,7 @@
 <script>
     var socket = io();
     const startingDistance = 1000; //cm
+    let previousReadings = [];
     //1400 frames of flowers
     socket.on('ultrasound-distance', function(msg){
 
@@ -34,8 +35,19 @@
             return;
         }
 
+        //averagae the readings so it doesn't jump around so much
+        previousReadings.push(msg.distance);
 
-        const distanceTraveled = startingDistance - msg.distance;
+        if(previousReadings.length >= 5) {
+            previousReadings.shift();
+        }
+
+        const averageDistance = previousReadings.reduce( (sum, num) => {
+            return num + sum;
+        }, 0) / previousReadings.length;
+
+
+        const distanceTraveled = startingDistance - averageDistance;
 
         const newFrameIndex =
             Math.ceil((distanceTraveled / startingDistance) * 1400);
