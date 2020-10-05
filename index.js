@@ -22,7 +22,10 @@ io.on('connection', (socket) => {
         console.log('Pipe data from python script ...');
         dataToSend = data.toString();
         console.log('dataToSend', dataToSend);
-        io.emit('ultrasound-distance', { someProperty: 'some value', otherProperty: 'other value' });
+        const distanceInCm = dataToSend
+            .replace('Measured Distance = ', '')
+            .replace(' cm', '');
+        io.emit('ultrasound-distance', { distance: distanceInCm});
 
     });
     // in close event we are sure that stream from child process is closed
