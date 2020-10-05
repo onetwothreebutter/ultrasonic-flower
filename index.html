@@ -30,7 +30,7 @@
     //1400 frames of flowers
     socket.on('ultrasound-distance', function(msg){
 
-        if(msg.distance >= initialDistance) {
+        if(msg.distance >= startingDistance) {
             return;
         }
 
