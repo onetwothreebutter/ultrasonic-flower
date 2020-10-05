@@ -42,6 +42,7 @@
             previousReadings.shift();
         }
 
+        console.log('previousReadings',previousReadings);
         const averageDistance = previousReadings.reduce( (sum, num) => {
             return num + sum;
         }, 0) / previousReadings.length;
