@@ -1,6 +1,7 @@
 #Libraries
 import RPi.GPIO as GPIO
 import time
+import sys
  
 #GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
@@ -46,7 +47,8 @@ if __name__ == '__main__':
     try:
         while True:
             dist = distance()
-            print ("Measured Distance = %.1f cm" % dist, flush=True)
+            print ("Measured Distance = %.1f cm" % dist)
+            sys.stdout.flush()
             time.sleep(1)
  
         # Reset by pressing CTRL + C
