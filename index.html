@@ -26,28 +26,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.dev.js"></script>
 <script>
     var socket = io();
-    let initialDistance = 0;
-    let previousDistance = 0;
+    const startingDistance = 1000; //cm
     //1400 frames of flowers
     socket.on('ultrasound-distance', function(msg){
-        if(initialDistance === 0) {
-            initialDistance = msg.distance;
-        }
 
         if(msg.distance >= initialDistance) {
             return;
         }
 
 
-        const distanceTraveled = msg.distance - previousDistance;
+        const distanceTraveled = startingDistance - msg.distance;
 
         const newFrameIndex =
-            Math.ceil((distanceTraveled / initialDistance) * 1400);
+            Math.ceil((distanceTraveled / startingDistance) * 1400);
 
         requestAnimationFrame(() => updateImage(newFrameIndex));
 
         console.log(msg);
-        previousDistance = msg.distance;
     });
 </script>
 <script>
