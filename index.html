@@ -29,11 +29,16 @@
     const startingDistance = 1000; //cm
     let previousReadings = [];
     //1400 frames of flowers
+    let animationCycles = 10;
     socket.on('ultrasound-distance', function(msg){
-
+        if(animationCycles > 0) {
+            return;
+        }
+        
         if(msg.distance >= startingDistance) {
             return;
         }
+
 
         //averagae the readings so it doesn't jump around so much
         previousReadings.push(msg.distance);
@@ -43,18 +48,25 @@
         }
 
         console.log('previousReadings',previousReadings);
-        const averageDistance = previousReadings.reduce( (sum, num) => {
+        const averageDistance = (previousReadings.reduce( (sum, num) => {
             return num + sum;
-        }, 0) / previousReadings.length;
+        }, 0)) / previousReadings.length;
 
         console.log('averageDistance', averageDistance);
 
         const distanceTraveled = startingDistance - averageDistance;
 
-        const newFrameIndex =
+        let newFrameIndex =
             Math.ceil((distanceTraveled / startingDistance) * 1400);
 
-        requestAnimationFrame(() => updateImage(newFrameIndex));
+        requestAnimationFrame(() => {
+            if(animationCycles <= 0) {
+                return;
+            }
+            updateImage(newFrameIndex);
+            newFrameIndex -= 1;
+            animationCycles -= 1;
+        });
 
         console.log(msg);
     });
