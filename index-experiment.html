@@ -73,11 +73,11 @@
 
 
   const preloadImages = () => {
-    for (let i = 1; i < frameCount; i++) {
+    for (let i = 1; i < 10; i++) {
       const img = new Image();
       img.src = currentFrame(i);
       img.addEventListener('load', () => {
-        console.log('loaded flower image');
+        console.log(`loaded flower image ${i}`);
         imageLoaded();
       } );
     }
@@ -106,6 +106,7 @@
   let imagesLoaded = 0;
   function imageLoaded() {
     imagesLoaded++;
+    console.log('value of imagesLoaded', imagesLoaded);
     if (imagesLoaded >= 1399) {
       requestAnimationFrame(animateFlower);
     }
