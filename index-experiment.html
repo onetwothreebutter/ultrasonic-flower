@@ -34,7 +34,7 @@
   const context = canvas.getContext("2d");
 
   const currentFrame = index => {
-    const value = `./public/flower-images/Daffodil-34826${index.toString().padStart(4, '0')}.jpg`;
+    const value = `/public/flower-images/Daffodil-34826${index.toString().padStart(4, '0')}.jpg`;
     return value;
     //https://assets.codepen.io/502545/Daffodil+-+348260450.jpg
   };
@@ -92,7 +92,7 @@
     updateImage(frameIndex);
 
     frameIndex += 1 * upDown;
-    
+
     if(frameIndex >= frameCount) {
       upDown = -1;
 
